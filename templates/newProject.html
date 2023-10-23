@@ -1,0 +1,52 @@
+{% extends "userBase.html" %} {% block content %}
+<div class="container" style="margin-top: 20px">
+  {% if project %}
+  <h2>Edit Project</h2>
+  {% else %}
+  <h2>New Project</h2>
+  {% endif %}
+  <form action="/newProject" method="post" novalidate>
+    {{ form.hidden_tag() }} {% if project %}
+    <input type="hidden" name="project_id" value="{{ project.project_id }}" />
+    {% else %}
+    <input type="hidden" name="project_id" value="0" />
+    {% endif %}
+    <div class="form-group">
+      {{ form.inputName.label(class="sr-only") }} {{
+      form.inputName(class="form-control", id="inputName", placeholder="Name")
+      }} {% if form.inputName.errors %} {% for error in form.inputName.errors %}
+      <div class="alert alert-danger"><strong>Error:</strong> {{ error }}</div>
+      {% endfor %} {% endif %}
+    </div>
+
+    <div class="form-group">
+      {{ form.inputDescription.label(class="sr-only") }} {{
+      form.inputDescription(class="form-control", id="inputDescription",
+      placeholder="Description") }} {% if form.inputDescription.errors %} {% for
+      error in form.inputDescription.errors %}
+      <div class="alert alert-danger"><strong>Error:</strong> {{ error }}</div>
+      {% endfor %} {% endif %}
+    </div>
+
+    <div class="form-group">
+      {{ form.inputDeadline.label(class="sr-only") }} {{
+      form.inputDeadline(class="form-control", id="inputDeadline", type="date")
+      }} {% if form.inputDeadline.errors %} {% for error in
+      form.inputDeadline.errors %}
+      <div class="alert alert-danger"><strong>Error:</strong> {{ error }}</div>
+      {% endfor %} {% endif %}
+    </div>
+
+    <div class="form-group text-center">
+      {{ form.inputStatus.label(class="sr-only") }} {{
+      form.inputStatus(class="form-control") }}
+    </div>
+
+    {{ form.submit(class="btn btn-lg btn-success btn-block") }}
+
+    <div class="text-right">
+      <a class="btn btn-secondary mt-3" href="/userHome">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

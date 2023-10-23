@@ -239,17 +239,21 @@ def updateProjectStatus(project_id):
     project = db.session.query(models.Project).filter_by(project_id=project_id).first()
     tasks = db.session.query(models.Task).filter_by(project_id=project_id).all()
 
-    if any(task.status_id == 2 for task in tasks):
-        project.status_id = 2
+    if tasks:
+        if any(task.status_id == 2 for task in tasks):
+            project.status_id = 2
+        else:
+            project.status_id = 1
+
+        all_tasks_completed = all(task.status_id == 4 for task in tasks)
+
+        if all_tasks_completed and project.status_id != 4:
+            project.status_id = 4
     else:
         project.status_id = 1
+
     db.session.commit()
 
-    all_tasks_completed = all(task.status_id == 4 for task in tasks)
-
-    if all_tasks_completed and project.status_id != 4:
-        project.status_id = 4
-        db.session.commit()
 
 
 
